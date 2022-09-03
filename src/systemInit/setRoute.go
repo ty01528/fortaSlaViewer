@@ -13,5 +13,5 @@ func SetRoute(engine *gin.Engine) {
 			"userDetail": "欢迎关注",
 		})
 	})
-	engine.POST("/index", handler.GetAddresses)
+	engine.POST("/index", handler.PhraseAndSaveAddress)
 }
