@@ -1,6 +1,7 @@
 package systemInit
 
 import (
+	"ginProject/src/handler"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -12,4 +13,5 @@ func SetRoute(engine *gin.Engine) {
 			"userDetail": "欢迎关注",
 		})
 	})
+	engine.POST("/index", handler.GetAddresses)
 }
