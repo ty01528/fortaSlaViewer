@@ -5,27 +5,29 @@ import (
 	"sync"
 )
 
-func GetScoreFromAddresses() []User {
+func GetScoreFromLeveldb() []User {
 	addresses := readAddressFromLeveldb()
 	var scoreList []User
 	var wg sync.WaitGroup
 	for _, address := range addresses {
 		address := address
 		wg.Add(1)
-		temp := address
-		var err error = nil
-		temp.realtimeScore, err = GetRealTimeScore(temp.address)
-		if err != nil {
-			temp.realtimeScore = address.realtimeScore
-		}
-		temp.weekScore, err = GetWeekScore(temp.address)
-		if err != nil {
-			temp.weekScore = address.weekScore
-		}
-		scoreList = append(scoreList, temp)
-		wg.Done()
-		wg.Wait()
+		go func() {
+			temp := address
+			var err error = nil
+			temp.RealtimeScore, err = GetRealTimeScore(temp.Address)
+			if err != nil {
+				temp.RealtimeScore = "Unregister/NetworkError"
+			}
+			temp.WeekScore, err = GetWeekScore(temp.Address)
+			if err != nil {
+				temp.WeekScore = "Unregister/NetworkError"
+			}
+			scoreList = append(scoreList, temp)
+			wg.Done()
+		}()
 	}
+	wg.Wait()
 	return scoreList
 }
 
@@ -35,10 +37,13 @@ func readAddressFromLeveldb() []User {
 	iter := db.NewIterator(nil, nil)
 	for iter.Next() {
 		var temp User
-		temp.address = string(iter.Key())
-		temp.name = string(iter.Value())
-		machineList = append(machineList, temp)
+		temp.Address = string(iter.Key())
+		temp.Name = string(iter.Value())
+		if !(temp.Address == "") {
+			machineList = append(machineList, temp)
+		}
 	}
 	iter.Release()
+	db.Close()
 	return machineList
 }

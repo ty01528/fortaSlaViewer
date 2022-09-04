@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -13,7 +12,7 @@ func TestAPI(t *testing.T) {
 	//println(weekScore)
 
 	// 读取数据的测试语句
-	ret := GetScoreFromAddresses()
+	//ret := GetScoreFromAddresses()
 	//ret := readAddressFromLeveldb()
-	fmt.Println(ret)
+	//fmt.Println(ret)
 }

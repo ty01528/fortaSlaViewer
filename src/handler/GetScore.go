@@ -3,9 +3,9 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/syndtr/goleveldb/leveldb/errors"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -21,13 +21,16 @@ func GetRealTimeScore(address string) (string, error) {
 
 	var dat map[string]interface{}
 	//var score map[string]interface{}
-	if err := json.Unmarshal(body, &dat); err == nil {
-		test := dat["statistics"].(map[string]interface{})["avg"]
-		println(test)
-		avg, _ := fmt.Printf("%.1f", dat["statistics"].(map[string]interface{})["avg"])
-		return strconv.Itoa(avg), nil
+	if resp.StatusCode != 404 {
+		if err := json.Unmarshal(body, &dat); err == nil {
+			score := dat["statistics"].(map[string]interface{})["avg"]
+			avg := fmt.Sprintf("%.2f", score)
+			return avg, nil
+		} else {
+			return "", errors.New("解析分数异常")
+		}
 	} else {
-		return "", err
+		return "333", errors.New("地址请求异常")
 	}
 }
 
@@ -43,11 +46,15 @@ func GetWeekScore(address string) (string, error) {
 	body, _ := ioutil.ReadAll(resp.Body)
 	var dat map[string]interface{}
 	//var score map[string]interface{}
-	if err := json.Unmarshal(body, &dat); err == nil {
-		avg, _ := fmt.Printf("%.1f", dat["statistics"].(map[string]interface{})["avg"])
-		return strconv.Itoa(avg), nil
+	if resp.StatusCode != 404 {
+		if err := json.Unmarshal(body, &dat); err == nil {
+			avg := fmt.Sprintf("%.2f", dat["statistics"].(map[string]interface{})["avg"])
+			return avg, nil
+		} else {
+			return "", errors.New("解析分数异常")
+		}
 	} else {
-		return "", err
+		return "333", errors.New("地址请求异常")
 	}
 }
 

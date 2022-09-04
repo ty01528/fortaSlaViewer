@@ -89,7 +89,7 @@
                       <!-- Download SVG icon from http://tabler-icons.io/i/search -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
                     </span>
-                <input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search in website">
+                <input type="text" value="" class="form-control" placeholder="尚未实现---" aria-label="Search in website">
               </div>
             </form>
           </div>
@@ -138,30 +138,48 @@
                   <th><button class="table-sort" data-sort="sort-weekScore">本周分数</button></th>
                   <th><button class="table-sort" data-sort="sort-nowScore">实时分数</button></th>
                   <th><button class="table-sort" data-sort="sort-Online">是否离线</button></th>
-                  <th><button class="table-sort" data-sort="sort-weekProgress">本周分数进度</button></th>
+<!--                  <th><button class="table-sort" data-sort="sort-weekProgress">本周分数进度</button></th>-->
                 </tr>
                 </thead>
                 <tbody class="table-tbody">
+                <tr></tr>
+                {{ range $index,$address := .Addresses }}
                 <tr>
-                  <td class="sort-name">Steel Vengeance</td>
-                  <td class="sort-city">Cedar Point, United States</td>
-                  <td class="sort-type">RMC Hybrid</td>
-                  <td class="sort-score">100,0%</td>
-                  <td class="sort-date" data-date="1628071164">August 04, 2021</td>
-                  <td class="sort-quantity">74</td>
-                  <td class="sort-progress" data-progress="30">
-                    <div class="row align-items-center">
-                      <div class="col-12 col-lg-auto">30%</div>
-                      <div class="col">
-                        <div class="progress" style="width: 5rem">
-                          <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                            <span class="visually-hidden">30% Complete</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <td class="sort-id">{{ $index }}</td>
+                  <td class="sort-name">{{ $address.Name }}</td>
+                  <td class="sort-address">{{ $address.Address }}</td>
+                  <td class="sort-weekScore">{{ $address.WeekScore }}</td>
+                  <td class="sort-nowScore">{{ $address.RealtimeScore }}</td>
+                  {{ if eq $address.RealtimeScore "0.00" }}
+                    <td class="sort-Online" style="color: red">
+                      <svg role="img" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" aria-labelledby="closeIconTitle" stroke="#ff0000" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#00ff00"> <title id="closeIconTitle">Close</title> <path d="M6.34314575 6.34314575L17.6568542 17.6568542M6.34314575 17.6568542L17.6568542 6.34314575"/> </svg>
+                      离线
+                    </td>
+                  {{ else if eq $address.RealtimeScore "Unregister/NetworkError"}}
+                    <td class="sort-Online" style="color: red">
+                      <svg width="16px" height="16px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-labelledby="eyeCrossedIconTitle" stroke="#ffff00" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#00ff00"> <title id="eyeCrossedIconTitle">Hidden (crossed eye)</title> <path d="M22 12C22 12 19 18 12 18C5 18 2 12 2 12C2 12 5 6 12 6C19 6 22 12 22 12Z"/> <circle cx="12" cy="12" r="3"/> <path d="M3 21L20 4"/> </svg>
+                      异常
+                    </td>
+                  {{ else }}
+                  <td class="sort-Online" style="color: green">
+                    <svg role="img" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" aria-labelledby="okIconTitle" stroke="#00ff00" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#00ff00"> <title id="okIconTitle">Ok</title> <polyline points="4 13 9 18 20 7"/> </svg>
+                    在线
                   </td>
+                  {{ end }}
+<!--                  <td class="sort-weekProgress" data-progress="30">-->
+<!--                    <div class="row align-items-center">-->
+<!--                      <div class="col-12 col-lg-auto">30%</div>-->
+<!--                      <div class="col">-->
+<!--                        <div class="progress" style="width: 5rem">-->
+<!--                          <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">-->
+<!--                            <span class="visually-hidden">30% Complete</span>-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </td>-->
                 </tr>
+                {{ end }}
                 </tbody>
               </table>
             </div>

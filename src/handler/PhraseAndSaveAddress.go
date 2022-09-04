@@ -4,18 +4,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/syndtr/goleveldb/leveldb"
 	"log"
-	"net/http"
 	"strconv"
 	"strings"
 )
 
 // User 这个结构体没啥用
 type User struct {
-	name           string
-	address        string
-	depositAddress string
-	weekScore      string
-	realtimeScore  string
+	Name           string
+	Address        string
+	DepositAddress string
+	WeekScore      string
+	RealtimeScore  string
 }
 
 func PhraseAndSaveAddress(context *gin.Context) {
@@ -24,9 +23,6 @@ func PhraseAndSaveAddress(context *gin.Context) {
 	err := saveAddress(addressList)
 	if err != nil {
 		log.Println("写入地址时出现错误！")
-		context.HTML(http.StatusBadRequest, "index.html", gin.H{})
-	} else {
-		context.HTML(http.StatusOK, "index.html", gin.H{})
 	}
 }
 
@@ -45,11 +41,13 @@ func saveAddress(addresses []string) error {
 	}
 	user := &User{}
 	for index, address := range addresses {
-		user.name = "User" + strconv.Itoa(index)
-		user.address = strings.Replace(address, "\n", "", -1)
-		err := db.Put([]byte(user.address), []byte(user.name), nil)
-		if err != nil {
-			return err
+		user.Name = "User" + strconv.Itoa(index)
+		user.Address = strings.Replace(address, "\n", "", -1)
+		if len(user.Address) == len("0x95Bc81164d901130c87185E2Dfb55D634f629773") {
+			err := db.Put([]byte(user.Address), []byte(user.Name), nil)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	defer db.Close()
