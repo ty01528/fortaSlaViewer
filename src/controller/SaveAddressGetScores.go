@@ -7,6 +7,7 @@ import (
 )
 
 func SaveAddressGetScores(context *gin.Context) {
+	context.Done()
 	handler.PhraseAndSaveAddress(context)
 	scores := handler.GetScoreFromLeveldb()
 	println(scores)
@@ -24,4 +25,5 @@ func GetScores(context *gin.Context) {
 		"userDetail": "欢迎关注",
 		"Addresses":  scores,
 	})
+	context.Done()
 }

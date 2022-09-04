@@ -6,6 +6,7 @@ import (
 )
 
 func SetRoute(engine *gin.Engine) {
-	engine.GET("/index", controller.GetScores)
+	engine.GET("/", controller.GetScores)
 	engine.POST("/index", controller.SaveAddressGetScores)
+	engine.GET("/index", controller.GetScores)
 }
