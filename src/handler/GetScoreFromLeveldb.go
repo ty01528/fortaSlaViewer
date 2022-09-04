@@ -17,11 +17,11 @@ func GetScoreFromLeveldb() []User {
 			var err error = nil
 			temp.RealtimeScore, err = GetRealTimeScore(temp.Address)
 			if err != nil {
-				temp.RealtimeScore = "Unregister/NetworkError"
+				temp.RealtimeScore = "Unregister/404"
 			}
 			temp.WeekScore, err = GetWeekScore(temp.Address)
 			if err != nil {
-				temp.WeekScore = "Unregister/NetworkError"
+				temp.WeekScore = "Unregister/404"
 			}
 			scoreList = append(scoreList, temp)
 			wg.Done()
