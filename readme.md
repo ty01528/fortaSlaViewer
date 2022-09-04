@@ -1,7 +1,7 @@
 # forta-SLA看板 v0.1
 
 
-使用golang与levelDb实现的本地的查询服务，尚无在线版计划发布，请自行编译
+使用golang与levelDb实现的本地的查询服务，尚无在线版计划发布，请自行编译或使用release编译完成的文件
 
 建议结合frp实现公网访问
 
