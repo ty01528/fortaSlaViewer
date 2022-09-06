@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"flag"
 	"fmt"
 	"ginProject/src/systemInit"
 	"github.com/gin-gonic/gin"
@@ -11,11 +12,16 @@ import (
 var FS embed.FS
 
 func main() {
+	var ip string
+	var port string
+	flag.StringVar(&ip, "ip", "127.0.0.1", "ip地址，默认为127.0.0.1")
+	flag.StringVar(&port, "port", "8080", "端口，默认为8080")
+	flag.Parse()
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 	systemInit.SourceInit(r, FS)
 	systemInit.SetRoute(r)
-	addr := ":8080"
+	addr := ip + ":" + port
 	fmt.Printf("启动服务" + addr)
 	err := r.Run(addr)
 	if err != nil {
