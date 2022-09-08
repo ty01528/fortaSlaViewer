@@ -138,7 +138,7 @@
                   <th><button class="table-sort" data-sort="sort-weekScore">本周分数</button></th>
                   <th><button class="table-sort" data-sort="sort-nowScore">实时分数</button></th>
                   <th><button class="table-sort" data-sort="sort-Online">是否离线</button></th>
-<!--                  <th><button class="table-sort" data-sort="sort-weekProgress">本周分数进度</button></th>-->
+                  <th><button class="table-sort" data-sort="sort-weekProgress">编辑</button></th>
                 </tr>
                 </thead>
                 <tbody class="table-tbody">
@@ -147,7 +147,7 @@
                 <tr>
                   <td class="sort-id">{{ $index }}</td>
                   <td class="sort-name">{{ $address.Name }}</td>
-                  <td class="sort-address">{{ $address.Address }}</td>
+                  <td class="sort-address" style="">{{ $address.Address }}</td>
                   <td class="sort-weekScore">{{ $address.WeekScore }}</td>
                   <td class="sort-nowScore">{{ $address.RealtimeScore }}</td>
                   {{ if eq $address.RealtimeScore "0.00" }}
@@ -166,18 +166,13 @@
                     在线
                   </td>
                   {{ end }}
-<!--                  <td class="sort-weekProgress" data-progress="30">-->
-<!--                    <div class="row align-items-center">-->
-<!--                      <div class="col-12 col-lg-auto">30%</div>-->
-<!--                      <div class="col">-->
-<!--                        <div class="progress" style="width: 5rem">-->
-<!--                          <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">-->
-<!--                            <span class="visually-hidden">30% Complete</span>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </td>-->
+                  <td class="sort-weekProgress" style="padding: 6px 14px 6px 6px;">
+                    <div class="row align-items-center">
+                      <a href="" class="btn" style="padding:7px" data-bs-toggle="modal" data-bs-target="#modal-simple" onclick="editAddress({{ $address.Address }},{{ $address.Name }})">
+                        编辑
+                      </a>
+                    </div>
+                  </td>
                 </tr>
                 {{ end }}
                 </tbody>
@@ -227,7 +222,8 @@
 <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <form id="sendNewAddress" action="/index" method="post">
+      <form id="sendNewAddress" action="/insertAddress" method="post">
+        <input type="hidden" name="action"  value="insertAddress">
           <div class="modal-header">
             <h5 class="modal-title">添加新地址</h5>
           </div>
@@ -249,10 +245,41 @@
     </div>
   </div>
 </div>
+<!--地址编辑框-->
+<div class="modal modal-blur fade" id="modal-simple" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">编辑地址</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="editForm" action="/editName" method="post">
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">地址</label>
+          <div class="form-control-plaintext" id="editPageAddress">address</div>
+          <input type="hidden" name="editAddress" id="editAddress" value="Null">
+          <input type="hidden" name="action"  value="editDetail">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">名称</label>
+          <input type="text" class="form-control" name="editName" placeholder="请输入新名称">
+        </div>
+        <a style="font-size: 10px;padding-top: 6px">注：修改完成后需要刷新界面！</a>
+      </div>
+      <div class="modal-footer">
+        <button class="btn me-auto" data-bs-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">保存更改</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 <!-- Libs JS -->
 <!-- Tabler Core -->
 <script src="./dist/js/tabler.min.js" defer></script>
 <script src="./dist/js/demo.min.js" defer></script>
+<script src="./dist/js/dataReact.js" defer></script>
 <!--<script src="./interactJs/uploadAddress.js" defer></script>-->
 </body>
 </html>

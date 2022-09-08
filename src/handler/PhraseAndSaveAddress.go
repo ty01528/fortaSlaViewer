@@ -54,3 +54,19 @@ func saveAddress(addresses []string) error {
 	defer println("address save to db complete!")
 	return nil
 }
+
+func FromAddressSaveName(address string, name string) error {
+	db, err := leveldb.OpenFile("./address.db", nil)
+	defer db.Close()
+	if err != nil {
+		log.Println("error opening databases! ")
+		log.Panicln(err)
+		return err
+	}
+	err = db.Put([]byte(address), []byte(name), nil)
+	if err != nil {
+		return err
+	}
+	log.Println(address + " 修改用户名为：" + name + " 成功！")
+	return nil
+}
