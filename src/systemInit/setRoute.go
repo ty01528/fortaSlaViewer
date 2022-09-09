@@ -8,6 +8,7 @@ import (
 func SetRoute(engine *gin.Engine) {
 	engine.GET("/", controller.GetScores)
 	engine.POST("/insertAddress", controller.SaveAddressGetScores)
-	engine.POST("/editName", controller.EditAddressName)
+	engine.POST("/editName", controller.EditAddress)
+	engine.POST("/deleteAddress", controller.DeleteAddress)
 	engine.GET("/index", controller.GetScores)
 }

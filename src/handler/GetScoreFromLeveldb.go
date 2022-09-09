@@ -47,3 +47,11 @@ func readAddressFromLeveldb() []User {
 	db.Close()
 	return machineList
 }
+func DeleteAddress(address string) {
+	db, _ := leveldb.OpenFile("./address.db", nil)
+	defer db.Close()
+	err := db.Delete([]byte(address), nil)
+	if err != nil {
+		return
+	}
+}
